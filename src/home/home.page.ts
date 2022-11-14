@@ -1,8 +1,11 @@
 import { BehaviorSubject, map, of } from "rxjs";
-import { CounterButtonComponent } from "./counter-button.component";
-import { InputComponent } from "./input.component";
-import { LinkComponent } from "./link.component";
-import { State } from "./state";
+import { CounterButtonComponent } from "../counter-button.component";
+import { div } from "../div";
+import { InputComponent } from "../input.component";
+import { LinkComponent } from "../link.component";
+import { State } from "../state";
+
+import "./home.css";
 
 export function HomePage(
   state$: BehaviorSubject<State>,
@@ -30,7 +33,11 @@ export function HomePage(
     })
   );
 
-  app?.appendChild(buttonComponent.getElement());
-  app?.appendChild(inputComponent.getElement());
-  app?.appendChild(linkComponent.getElement());
+  const pageContainer = div({ class: "home-page" }, [
+    div({ class: "line" }, [linkComponent.getElement()]),
+    div({ class: "line" }, [buttonComponent.getElement()]),
+    div({ class: "line" }, [inputComponent.getElement()]),
+  ]);
+
+  app?.appendChild(pageContainer);
 }

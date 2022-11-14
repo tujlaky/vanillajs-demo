@@ -15,11 +15,11 @@ router.configure(
   [
     {
       path: "/",
-      load: () => import("./home.page").then((m) => m.HomePage),
+      load: () => import("./home/home.page").then((m) => m.HomePage),
     },
     {
       path: "/demo",
-      load: () => import("./demo.page").then((m) => m.DemoPage),
+      load: () => import("./demo/demo.page").then((m) => m.DemoPage),
     },
   ],
   state$,
