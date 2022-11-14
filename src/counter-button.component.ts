@@ -1,4 +1,4 @@
-import { Observable, Subject, takeUntil, tap } from "rxjs";
+import { fromEvent, Observable, Subject, takeUntil, tap } from "rxjs";
 
 const CounterButtonComponent = ({
   state$,
@@ -12,14 +12,12 @@ const CounterButtonComponent = ({
   const button = document.createElement("button");
 
   if (onClick) {
-    button.addEventListener("click", () => onClick());
+    const click$ = fromEvent(button, "click");
+    click$.pipe(takeUntil(destroy$)).subscribe(onClick);
   }
 
   state$
-    .pipe(
-      tap((value) => console.log(value)),
-      takeUntil(destroy$)
-    )
+    .pipe(takeUntil(destroy$))
     .subscribe((value) => (button.innerText = `Start ${value}`));
 
   return button;

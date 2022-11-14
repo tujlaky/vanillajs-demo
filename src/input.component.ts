@@ -12,7 +12,7 @@ const InputComponent = ({
   const el = document.createElement("input");
   const input$ = fromEvent(el, "input");
 
-  input$.subscribe(() => {
+  input$.pipe(takeUntil(destroy$)).subscribe(() => {
     const number = parseInt(el.value, 10);
 
     if (!isNaN(number) && onChange) {
