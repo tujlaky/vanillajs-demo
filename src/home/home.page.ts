@@ -1,42 +1,45 @@
-import { BehaviorSubject, map, of } from "rxjs";
-import { CounterButtonComponent } from "../counter-button.component";
+import { BehaviorSubject, map, of, Subject } from "rxjs";
+import CounterButtonComponent from "../counter-button.component";
 import { div } from "../div";
-import { InputComponent } from "../input.component";
-import { LinkComponent } from "../link.component";
+import InputComponent from "../input.component";
+import LinkComponent from "../link.component";
 import { State } from "../state";
 
 import "./home.css";
 
 export function HomePage(
   state$: BehaviorSubject<State>,
-  app: HTMLElement | null
+  app: HTMLElement | null,
+  destroy$ = new Subject<void>()
 ) {
-  const inputComponent = new InputComponent(
-    state$.asObservable().pipe(map((state) => state.counter))
-  );
-  const buttonComponent = new CounterButtonComponent(
-    state$.asObservable().pipe(map((state) => state.counter))
-  );
-  const linkComponent = new LinkComponent(of(undefined));
+  const inputComponent = InputComponent({
+    state$: state$.asObservable().pipe(map((state) => state.counter)),
+    onChange: (value) => {
+      state$.next({
+        ...state$.value,
+        counter: value,
+      });
+    },
+    destroy$,
+  });
 
-  buttonComponent.click$.subscribe(() =>
-    state$.next({
-      ...state$.value,
-      counter: state$.value.counter + 1,
-    })
-  );
+  const buttonComponent = CounterButtonComponent({
+    state$: state$.asObservable().pipe(map((state) => state.counter)),
+    onClick: () => {
+      state$.next({
+        ...state$.value,
+        counter: state$.value.counter + 1,
+      });
+    },
+    destroy$,
+  });
 
-  inputComponent.change$.subscribe((value) =>
-    state$.next({
-      ...state$.value,
-      counter: value,
-    })
-  );
+  const linkComponent = LinkComponent();
 
   const pageContainer = div({ class: "home-page" }, [
-    div({ class: "line" }, [linkComponent.getElement()]),
-    div({ class: "line" }, [buttonComponent.getElement()]),
-    div({ class: "line" }, [inputComponent.getElement()]),
+    div({ class: "line" }, [linkComponent]),
+    div({ class: "line" }, [buttonComponent]),
+    div({ class: "line" }, [inputComponent]),
   ]);
 
   app?.appendChild(pageContainer);

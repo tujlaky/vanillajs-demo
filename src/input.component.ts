@@ -1,23 +1,30 @@
-import { Subject, fromEvent, Observable } from "rxjs";
-import { Component } from "./component";
+import { fromEvent, Observable, Subject, takeUntil } from "rxjs";
 
-export class InputComponent extends Component {
-  public change$ = new Subject<number>();
+const InputComponent = ({
+  state$,
+  onChange,
+  destroy$ = new Subject<void>(),
+}: {
+  state$: Observable<number>;
+  onChange?: (number: number) => void;
+  destroy$?: Subject<void>;
+}): HTMLElement => {
+  const el = document.createElement("input");
+  const input$ = fromEvent(el, "input");
 
-  protected createElement(state$: Observable<number>) {
-    const input = document.createElement("input");
-    const input$ = fromEvent(input, "input");
+  input$.subscribe(() => {
+    const number = parseInt(el.value, 10);
 
-    input$.subscribe(() => {
-      const number = parseInt(input.value, 10);
+    if (!isNaN(number) && onChange) {
+      onChange(number);
+    }
+  });
 
-      if (!isNaN(number)) {
-        this.change$.next(number);
-      }
-    });
+  state$
+    .pipe(takeUntil(destroy$))
+    .subscribe((value) => (el.value = value.toString()));
 
-    state$.subscribe((value) => (input.value = value.toString()));
+  return el;
+};
 
-    return input;
-  }
-}
+export default InputComponent;

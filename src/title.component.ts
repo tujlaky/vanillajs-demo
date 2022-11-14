@@ -1,11 +1,9 @@
-import { Component } from "./component";
+const TitleComponent = (): HTMLElement => {
+  const h1 = document.createElement("h1");
 
-export class TitleComponent extends Component {
-  protected createElement() {
-    const h1 = document.createElement("h1");
+  h1.innerText = "Hello world!";
 
-    h1.innerText = 'Hello world!';
+  return h1;
+};
 
-    return h1;
-  }
-}
+export default TitleComponent;

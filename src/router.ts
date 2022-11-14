@@ -35,6 +35,7 @@ export default class Router {
   private routes: Array<Route> = [];
   private _notFound: Function = () => {};
   private eventsSubject$ = new Subject<Route>();
+  private destroy$ = new Subject<void>();
   public events$ = this.eventsSubject$.asObservable();
 
   // Constructor
@@ -99,7 +100,9 @@ export default class Router {
           app.innerHTML = "";
         }
 
-        Page(state$, app);
+        this.destroy$.next();
+
+        Page(state$, app, this.destroy$);
         this.redefineLinks();
       })
     );

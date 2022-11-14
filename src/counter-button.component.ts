@@ -1,13 +1,28 @@
-import { fromEvent, Observable } from "rxjs";
-import { Component } from "./component";
+import { Observable, Subject, takeUntil, tap } from "rxjs";
 
-export class CounterButtonComponent extends Component {
-  public click$ = fromEvent(this.mainElement, "click");
-  protected createElement(state$: Observable<number>) {
-    const button = document.createElement("button");
+const CounterButtonComponent = ({
+  state$,
+  onClick,
+  destroy$ = new Subject<void>(),
+}: {
+  state$: Observable<number>;
+  onClick?: () => void;
+  destroy$?: Subject<void>;
+}): HTMLElement => {
+  const button = document.createElement("button");
 
-    state$.subscribe((value) => (button.innerText = `Start ${value}`));
-
-    return button;
+  if (onClick) {
+    button.addEventListener("click", () => onClick());
   }
-}
+
+  state$
+    .pipe(
+      tap((value) => console.log(value)),
+      takeUntil(destroy$)
+    )
+    .subscribe((value) => (button.innerText = `Start ${value}`));
+
+  return button;
+};
+
+export default CounterButtonComponent;
