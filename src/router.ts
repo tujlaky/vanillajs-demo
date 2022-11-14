@@ -1,8 +1,15 @@
+import { BehaviorSubject, Subject } from "rxjs";
+
 // Route interface
 interface Route {
   path: string;
   handler: Function;
   params: Array<string>;
+}
+
+interface RouteConfig {
+  path: string;
+  load: () => Promise<Function>;
 }
 
 // Params interface
@@ -26,7 +33,9 @@ export default class Router {
   // Properties
   private root: string;
   private routes: Array<Route> = [];
-  private _notFound: Function = () => { };
+  private _notFound: Function = () => {};
+  private eventsSubject$ = new Subject<Route>();
+  public events$ = this.eventsSubject$.asObservable();
 
   // Constructor
   constructor(root: string) {
@@ -53,7 +62,7 @@ export default class Router {
   public redefineLinks() {
     let links = document.querySelectorAll("a[data-router]");
 
-    links.forEach(link => link.addEventListener("click", this.go));
+    links.forEach((link) => link.addEventListener("click", this.go));
   }
 
   /**
@@ -62,21 +71,38 @@ export default class Router {
    * @param func any
    */
   public on(path: string, handler: any): Router {
-    console.log(path);
-    console.log(PARAMS_REGEX);
     let params = path.match(PARAMS_REGEX);
 
     if (params) {
-      params = params.map(param => param.replace(":", ""));
+      params = params.map((param) => param.replace(":", ""));
     }
 
     this.routes.push({
       path,
       handler,
-      params: params || []
+      params: params || [],
     });
 
     return this;
+  }
+
+  public configure(
+    routeConfigs: RouteConfig[],
+    state$: BehaviorSubject<any>,
+    app: HTMLElement | null
+  ) {
+    routeConfigs.forEach((config) =>
+      this.on(config.path, async () => {
+        const Page = await config.load();
+
+        if (app) {
+          app.innerHTML = "";
+        }
+
+        Page(state$, app);
+        this.redefineLinks();
+      })
+    );
   }
 
   /**
@@ -141,14 +167,14 @@ export default class Router {
    */
   private findRoutes(path: string): Array<Match | null> {
     return this.routes
-      .map(route => {
+      .map((route) => {
         const { regex, names } = this.replace(route);
         const match = path.replace(/^\/+/, "/").match(regex);
         const params = this.getParams(match, names);
 
         return match ? { match, route, params } : null;
       })
-      .filter(m => m);
+      .filter((m) => m);
   }
 
   /**
@@ -178,6 +204,8 @@ export default class Router {
 
     const { route, params } = m;
 
+    this.eventsSubject$.next(route);
+
     return route.handler(query, params);
   }
 
@@ -189,8 +217,8 @@ export default class Router {
     console.log("PREVENTED");
     event.preventDefault();
 
-    const query = event.target.closest('a').search;
-    const pathname = event.target.closest('a').pathname;
+    const query = event.target.closest("a").search;
+    const pathname = event.target.closest("a").pathname;
 
     const url = query
       ? `${this.root}${pathname}${query}`

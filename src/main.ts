@@ -1,30 +1,29 @@
-import './style.css'
+import "./style.css";
 
 import { BehaviorSubject } from "rxjs";
-import Router from './router';
+import Router from "./router";
+import { State } from "./state";
 
-const router = new Router('');
+const router = new Router("");
 
 const app = document.getElementById("app");
-const state$ = new BehaviorSubject(0);
-
-router.on('/', async () => {
-  if (app) {
-    app.innerHTML = '';
-    const { HomePage } = await import('./home.page');
-
-    HomePage(state$, app);
-    router.redefineLinks();
-  }
+const state$ = new BehaviorSubject<State>({
+  counter: 0,
 });
 
-router.on('/demo', async () => {
-  if (app) {
-    app.innerHTML = '';
-
-    const { DemoPage } = await import('./demo.page');
-    DemoPage(state$, app);
-  }
-});
+router.configure(
+  [
+    {
+      path: "/",
+      load: () => import("./home.page").then((m) => m.HomePage),
+    },
+    {
+      path: "/demo",
+      load: () => import("./demo.page").then((m) => m.DemoPage),
+    },
+  ],
+  state$,
+  app
+);
 
 router.init();

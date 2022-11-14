@@ -1,10 +1,10 @@
-import { Subject, BehaviorSubject, fromEvent } from "rxjs";
+import { Subject, fromEvent, Observable } from "rxjs";
 import { Component } from "./component";
 
 export class InputComponent extends Component {
   public change$ = new Subject<number>();
 
-  protected createElement(state$: BehaviorSubject<number>) {
+  protected createElement(state$: Observable<number>) {
     const input = document.createElement("input");
     const input$ = fromEvent(input, "input");
 

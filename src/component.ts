@@ -1,9 +1,9 @@
-import { BehaviorSubject } from "rxjs";
+import { Observable } from "rxjs";
 
 export abstract class Component {
   protected mainElement: HTMLElement;
 
-  constructor(state$: BehaviorSubject<number>) {
+  constructor(state$: Observable<any>) {
     this.mainElement = this.createElement(state$);
   }
 
@@ -11,7 +11,5 @@ export abstract class Component {
     return this.mainElement;
   }
 
-  protected abstract createElement(
-    state$: BehaviorSubject<number>
-  ): HTMLElement;
+  protected abstract createElement(state$: Observable<any>): HTMLElement;
 }
