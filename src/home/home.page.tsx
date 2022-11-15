@@ -12,7 +12,7 @@ export function HomePage(
   destroy$ = new Subject<void>()
 ) {
   const counter$ = state$.asObservable().pipe(map((state) => state.counter));
-  
+
   const onChange = (value: number): void => {
     state$.next({
       ...state$.value,
@@ -36,7 +36,7 @@ export function HomePage(
         <CounterButtonComponent state$={counter$} onClick={onClick} destroy$={destroy$}></CounterButtonComponent>
       </div>
       <div class="line">
-        <LinkComponent></LinkComponent>
+        <LinkComponent href="/demo">DEMO PAGE</LinkComponent>
       </div>
       <FooterComponent></FooterComponent>
     </div>

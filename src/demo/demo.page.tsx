@@ -13,6 +13,6 @@ export function DemoPage(
   });
 
   return (
-    <TitleComponent></TitleComponent>
+    <TitleComponent>Test</TitleComponent>
   );
 }
