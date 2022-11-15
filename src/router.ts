@@ -102,7 +102,7 @@ export default class Router {
 
         this.destroy$.next();
 
-        Page(state$, app, this.destroy$);
+        app?.appendChild(Page(state$, this.destroy$));
         this.redefineLinks();
       })
     );
