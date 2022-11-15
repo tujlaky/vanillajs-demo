@@ -1,4 +1,4 @@
-import { fromEvent, Observable, Subject, takeUntil, tap } from "rxjs";
+import { fromEvent, Observable, Subject, takeUntil } from "rxjs";
 
 const CounterButtonComponent = ({
   state$,

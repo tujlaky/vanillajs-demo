@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "daisyui": "^2.40.1",
-    "rxjs": "^7.5.7"
+    "rxjs": "^7.5.7",
+    "tsx-dom": "^2.0.0"
   }
 }

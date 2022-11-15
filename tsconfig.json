@@ -4,6 +4,8 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "tsx-dom",
     "moduleResolution": "Node",
     "strict": true,
     "resolveJsonModule": true,

@@ -1,4 +1,4 @@
-import { BehaviorSubject, map, of, Subject } from "rxjs";
+import { BehaviorSubject, map, Subject } from "rxjs";
 import CounterButtonComponent from "../counter-button.component";
 import { div } from "../div";
 import FooterComponent from "../footer.component";
