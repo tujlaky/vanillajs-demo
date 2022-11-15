@@ -30,3 +30,7 @@ export function element(
 export function div(config: ElementConfig, children?: HTMLElement[]) {
   return element("div", config, children);
 }
+
+export function footer(config: ElementConfig, children?: HTMLElement[]) {
+  return element("footer", config, children);
+}

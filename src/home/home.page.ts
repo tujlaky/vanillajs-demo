@@ -1,6 +1,7 @@
 import { BehaviorSubject, map, of, Subject } from "rxjs";
 import CounterButtonComponent from "../counter-button.component";
 import { div } from "../div";
+import FooterComponent from "../footer.component";
 import InputComponent from "../input.component";
 import LinkComponent from "../link.component";
 import { State } from "../state";
@@ -36,6 +37,8 @@ export function HomePage(
 
   const linkComponent = LinkComponent();
 
+  const footer = FooterComponent();
+
   const pageContainer = div({ class: "home-page" }, [
     div({ class: "line" }, [linkComponent]),
     div({ class: "line" }, [buttonComponent]),
@@ -43,4 +46,5 @@ export function HomePage(
   ]);
 
   app?.appendChild(pageContainer);
+  app?.appendChild(footer);
 }
