@@ -1,7 +1,3 @@
-.home-page {
-  background-color: red;
-}
-
 .home-page .line {
   display: flex;
   justify-content: center;

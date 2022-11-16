@@ -10,6 +10,7 @@ const InputComponent = ({
   destroy$?: Subject<void>;
 }): HTMLElement => {
   const el = document.createElement("input");
+  el.className = 'input input-bordered w-full max-w-xs';
   const input$ = fromEvent(el, "input");
 
   input$.pipe(takeUntil(destroy$)).subscribe(() => {

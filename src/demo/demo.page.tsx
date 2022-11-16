@@ -1,4 +1,7 @@
 import { BehaviorSubject } from "rxjs";
+import FooterComponent from "../footer.component";
+import LinkComponent from "../link.component";
+import NavbarComponent from "../navbar.component";
 import { State } from "../state";
 import TitleComponent from "../title.component";
 
@@ -43,13 +46,28 @@ export function DemoPage(
   };
 
   return (
-    <div>
-      <TitleComponent>Test</TitleComponent>
+    <div class="demo-page page">
+      <div><NavbarComponent></NavbarComponent></div>
+      <div class="w-1/2 flex flex-col justify-center items-center">
+        <div class="flex w-full mb-3 flex-col justify-center items-center">
+          <TitleComponent>Test</TitleComponent>
+        </div>
 
-      <form onSubmit={onSubmit}>
-        <input name="demo" type="text" />
-        <button type="submit">Submit</button>
-      </form>
+
+        <form class="flex justify-center items-start flex-col" onSubmit={onSubmit}>
+          <div>
+            <input placeholder="Change the counter" class="input mb-3 input-bordered w-full max-w-xs" name="demo" type="text" />
+          </div>
+          <div class="mb-3 self-end">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </form>
+
+        <div class="line">
+          <LinkComponent href="/">Go back</LinkComponent>
+        </div>
+      </div>
+      <FooterComponent></FooterComponent>
     </div>
   );
 }

@@ -5,7 +5,7 @@ interface LinkComponentProps extends BaseProps {
 }
 
 const LinkComponent = ({ href, children }: LinkComponentProps): HTMLElement => {
-  return <a data-router href={href}>{children}</a>;
+  return <a class="link link-secondary" data-router href={href}>{children}</a>;
 };
 
 export default LinkComponent;

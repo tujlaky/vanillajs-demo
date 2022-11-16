@@ -3,6 +3,7 @@ import CounterButtonComponent from "../counter-button.component";
 import FooterComponent from "../footer.component";
 import InputComponent from "../input.component";
 import LinkComponent from "../link.component";
+import NavbarComponent from "../navbar.component";
 import { State } from "../state";
 
 import "./home.css";
@@ -15,7 +16,7 @@ export function HomePage(
 
   const onChange = (value: number): void => {
     state$.next({
-      ...state$.value,
+      ...state$.value, // state
       counter: value,
     });
   };
@@ -28,16 +29,22 @@ export function HomePage(
   };
 
   return (
-    <div class="home-page">
-      <div class="line">
-        <InputComponent state$={counter$} onChange={onChange} destroy$={destroy$}></InputComponent>
+    <div class="home-page page">
+      <div>
+        <NavbarComponent></NavbarComponent>
       </div>
-      <div class="line">
-        <CounterButtonComponent state$={counter$} onClick={onClick} destroy$={destroy$}></CounterButtonComponent>
+      <div>
+        <div class="line">
+          <InputComponent state$={counter$} onChange={onChange} destroy$={destroy$}></InputComponent>
+        </div>
+        <div class="line">
+          <CounterButtonComponent state$={counter$} onClick={onClick} destroy$={destroy$}></CounterButtonComponent>
+        </div>
+        <div class="line">
+          <LinkComponent href="/demo">DEMO PAGE</LinkComponent>
+        </div>
       </div>
-      <div class="line">
-        <LinkComponent href="/demo">DEMO PAGE</LinkComponent>
-      </div>
+
       <FooterComponent></FooterComponent>
     </div>
   );

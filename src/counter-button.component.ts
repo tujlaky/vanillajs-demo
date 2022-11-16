@@ -11,6 +11,8 @@ const CounterButtonComponent = ({
 }): HTMLElement => {
   const button = document.createElement("button");
 
+  button.className = 'btn';
+
   if (onClick) {
     const click$ = fromEvent(button, "click");
     click$.pipe(takeUntil(destroy$)).subscribe(onClick);
