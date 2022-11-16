@@ -12,7 +12,7 @@ const NavbarComponent = () => {
             <li><a data-router href="/demo">Demo form</a></li>
           </ul>
         </div>
-        <a class="btn btn-ghost normal-case text-xl">VanillaJS Demo</a>
+        <a data-router href="/" class="btn btn-ghost normal-case text-xl">VanillaJS Demo</a>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal p-0">
